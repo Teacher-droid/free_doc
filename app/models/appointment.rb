@@ -1,6 +1,5 @@
 class Appointment < ApplicationRecord
-
-    belongs_to :medic
-    belongs_to :patient 
-
+  belongs_to :city
+  belongs_to :doctor
+  belongs_to :patient
 end

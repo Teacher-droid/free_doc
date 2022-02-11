@@ -6,21 +6,55 @@
 #   movies = Movie.create([{ name: 'Star Wars' }, { name: 'Lord of the Rings' }])
 #   Character.create(name: 'Luke', movie: movies.first)
 
-
 require 'faker'
-Medic.destroy_all
+
+Doctor.destroy_all
 Patient.destroy_all
-100.times do
+City.destroy_all
+Appointment.destroy_all
 
-    user = Medic.create!(first_name: Faker::FunnyName.name, last_name: Faker::Name.name, specialty: Faker::Job.title, zip_code: Faker::Address.postcode)
-    user = Patient.create!(first_name: Faker::FunnyName.name, last_name: Faker::Name.name)
-    #user = User.create!(first_name: Faker::Name.first_name, email: Faker::Internet.email)
-
+10.times do
+  city = City.create!(
+    name: Faker::Address.city
+    )
 end
 
+10.times do
+  doctor = Doctor.create!(
+    first_name: Faker::Name.first_name, 
+    last_name: Faker::Name.last_name, 
+    zip_code: Faker::Address.zip_code, 
+    city_id: City.all.sample.id
+    )
+end
 
-#require 'faker'
-#Medic.destroy_all
-#100.times do
-  #medic = Medic.create!(first_name: Faker::Name.first_name)
-#end
+Specialty.create!(specialty: "1")
+Specialty.create!(specialty: "2")
+Specialty.create!(specialty: "3")
+Specialty.create!(specialty: "4")
+Specialty.create!(specialty: "5")
+Specialty.create!(specialty: "6")
+
+10.times do
+  join = JoinTableDoctorSpecialty.create!(
+    doctor: Doctor.all.select(:id).sample, 
+    specialty: Specialty.all.select(:id).sample
+    )
+end
+
+10.times do
+  patient = Patient.create!(
+    first_name: Faker::Name.first_name, 
+    last_name: Faker::Name.last_name, 
+    city_id: City.all.sample.id
+    )
+end
+
+10.times do
+  appointment = Appointment.create!(
+    doctor: Doctor.all.sample, 
+    patient: Patient.all.sample, 
+    date: Faker::Date.forward(days: 100), 
+    city_id: City.all.sample.id
+    )
+end
